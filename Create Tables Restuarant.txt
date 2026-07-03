@@ -1,0 +1,47 @@
+CREATE TABLE Customers(
+    CustomerID NUMBER PRIMARY KEY,
+    FirstName VARCHAR2(50),
+    LastName VARCHAR2(50),
+    Phone VARCHAR2(20),
+    Email VARCHAR2(100)
+);
+CREATE TABLE Staff(
+    StaffID NUMBER PRIMARY KEY,
+    FirstName VARCHAR2(50),
+    LastName VARCHAR2(50),
+    Position VARCHAR2(30),
+    Phone VARCHAR2(20)
+);
+CREATE TABLE Menu(
+    MenuID NUMBER PRIMARY KEY,
+    FoodName VARCHAR2(100),
+    Category VARCHAR2(50),
+    Price NUMBER(8,2),
+    Availability VARCHAR2(10)
+);
+CREATE TABLE Orders(
+    OrderID NUMBER PRIMARY KEY,
+    CustomerID NUMBER,
+    StaffID NUMBER,
+    OrderDate DATE,
+    Status VARCHAR2(20),
+    FOREIGN KEY(CustomerID) REFERENCES Customers(CustomerID),
+    FOREIGN KEY(StaffID) REFERENCES Staff(StaffID)
+);
+CREATE TABLE Order_Details(
+    DetailID NUMBER PRIMARY KEY,
+    OrderID NUMBER,
+    MenuID NUMBER,
+    Quantity NUMBER,
+    Subtotal NUMBER(10,2),
+    FOREIGN KEY(OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY(MenuID) REFERENCES Menu(MenuID)
+);
+CREATE TABLE Payments(
+    PaymentID NUMBER PRIMARY KEY,
+    OrderID NUMBER UNIQUE,
+    Amount NUMBER(10,2),
+    PaymentMethod VARCHAR2(20),
+    PaymentDate DATE,
+    FOREIGN KEY(OrderID) REFERENCES Orders(OrderID)
+);

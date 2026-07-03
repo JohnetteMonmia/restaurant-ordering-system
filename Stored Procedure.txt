@@ -1,0 +1,33 @@
+CREATE OR REPLACE PROCEDURE Place_Order (
+    p_customer_id NUMBER,
+    p_staff_id NUMBER,
+    p_menu_id NUMBER,
+    p_quantity NUMBER
+)
+IS
+    v_price NUMBER;
+    v_order_id NUMBER;
+    v_subtotal NUMBER;
+    v_detail_id NUMBER;
+BEGIN
+
+    SELECT Price INTO v_price
+    FROM Menu
+    WHERE MenuID = p_menu_id;
+
+    SELECT NVL(MAX(OrderID),0) + 1 INTO v_order_id FROM Orders;
+
+    INSERT INTO Orders(OrderID, CustomerID, StaffID, OrderDate, Status)
+    VALUES (v_order_id, p_customer_id, p_staff_id, SYSDATE, 'NEW');
+
+    v_subtotal := v_price * p_quantity;
+
+    SELECT NVL(MAX(DetailID),0) + 1 INTO v_detail_id FROM Order_Details;
+
+    INSERT INTO Order_Details(DetailID, OrderID, MenuID, Quantity, Subtotal)
+    VALUES (v_detail_id, v_order_id, p_menu_id, p_quantity, v_subtotal);
+
+    DBMS_OUTPUT.PUT_LINE('Order successfully created. Order ID: ' || v_order_id);
+
+END;
+/

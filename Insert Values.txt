@@ -1,0 +1,14 @@
+INSERT INTO Customers VALUES (1,'Wilmot','Dennis','0791920840','Wilmotdenid8@gmail.com');
+INSERT INTO Customers VALUES (2,'Johnette','Monmia','0793145356','johnettem@gmail.com');
+INSERT INTO Customers VALUES (3,'Marvelous','Sarkor','07277738837','mava3232@gmail.com');
+INSERT INTO Customers VALUES (4,'Sharell','Menley','07964387648','bigjueseason99@gmail.com');
+INSERT INTO Customers VALUES (5,'Particia','Ndorbor','0783434456','my17promax@gmail.com');
+
+INSERT INTO Staff VALUES (1,'Peterlyn','Kim','Manager','0788000002');
+INSERT INTO Staff VALUES (2,'Brian','Coco','Cashier','0788000003');
+
+INSERT INTO Menu VALUES (1,'Chicken Burger','Fast Food',3500,'Available');
+INSERT INTO Menu VALUES (2,'French Fries','Fast Food',2000,'Available');
+
+INSERT INTO Payments VALUES (1, 1, 7000, 'Cash', SYSDATE);
+INSERT INTO Payments VALUES (2, 2, 15000, 'Card', SYSDATE);
