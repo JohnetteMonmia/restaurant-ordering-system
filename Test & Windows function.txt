@@ -1,0 +1,50 @@
+EXEC Place_Order(1, 1, 1, 2);
+
+CREATE OR REPLACE FUNCTION Calculate_Total (
+    p_order_id NUMBER
+)
+RETURN NUMBER
+IS
+    v_total NUMBER;
+BEGIN
+
+    SELECT NVL(SUM(Subtotal), 0)
+    INTO v_total
+    FROM Order_Details
+    WHERE OrderID = p_order_id;
+
+    RETURN v_total;
+
+END;
+/
+
+SELECT Calculate_Total(1) FROM dual;SELECT 
+    c.CustomerID,
+    c.FirstName,
+    SUM(p.Amount) AS TotalSpent,
+    RANK() OVER (ORDER BY SUM(p.Amount) DESC) AS CustomerRank
+FROM Customers c
+JOIN Orders o ON c.CustomerID = o.CustomerID
+JOIN Payments p ON o.OrderID = p.OrderID
+GROUP BY c.CustomerID, c.FirstName;
+
+SELECT 
+    m.FoodName,
+    SUM(od.Quantity) AS TotalSold,
+    DENSE_RANK() OVER (ORDER BY SUM(od.Quantity) DESC) AS Rank
+FROM Menu m
+JOIN Order_Details od ON m.MenuID = od.MenuID
+GROUP BY m.FoodName;
+
+SELECT 
+    PaymentDate,
+    Amount,
+    SUM(Amount) OVER (ORDER BY PaymentDate) AS RunningTotal
+FROM Payments;
+
+SELECT 
+    TRUNC(PaymentDate) AS SaleDate,
+    SUM(Amount) AS DailySales,
+    RANK() OVER (ORDER BY SUM(Amount) DESC) AS SalesRank
+FROM Payments
+GROUP BY TRUNC(PaymentDate);
